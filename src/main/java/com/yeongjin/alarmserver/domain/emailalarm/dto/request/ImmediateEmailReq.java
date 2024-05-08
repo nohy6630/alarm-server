@@ -1,4 +1,4 @@
-package com.yeongjin.alarmserver.domain.dto.request;
+package com.yeongjin.alarmserver.domain.emailalarm.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
