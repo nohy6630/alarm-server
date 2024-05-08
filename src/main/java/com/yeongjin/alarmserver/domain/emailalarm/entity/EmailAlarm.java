@@ -1,4 +1,4 @@
-package com.yeongjin.alarmserver.domain.entity;
+package com.yeongjin.alarmserver.domain.emailalarm.entity;
 
 
 import jakarta.persistence.*;
