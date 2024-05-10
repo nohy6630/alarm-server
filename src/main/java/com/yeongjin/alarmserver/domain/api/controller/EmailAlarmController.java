@@ -1,8 +1,8 @@
-package com.yeongjin.alarmserver.domain.emailalarm.controller;
+package com.yeongjin.alarmserver.domain.api.controller;
 
-import com.yeongjin.alarmserver.domain.emailalarm.dto.request.ImmediateEmailReq;
-import com.yeongjin.alarmserver.domain.emailalarm.dto.request.ScheduledEmailReq;
-import com.yeongjin.alarmserver.domain.emailalarm.service.EmailAlarmService;
+import com.yeongjin.alarmserver.domain.api.dto.request.ImmediateEmailReq;
+import com.yeongjin.alarmserver.domain.api.dto.request.ScheduledEmailReq;
+import com.yeongjin.alarmserver.domain.api.service.EmailAlarmService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

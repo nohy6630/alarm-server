@@ -1,4 +1,4 @@
-package com.yeongjin.alarmserver.domain.emailalarm.dto.request;
+package com.yeongjin.alarmserver.domain.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
