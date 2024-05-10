@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
@@ -35,12 +37,13 @@ public class EmailAlarm {
     private boolean isSent;
 
     public static EmailAlarm ofImmediate(List<String> recipients, String subject, String content) {
+        LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
         return EmailAlarm.builder()
                 .recipients(recipients)
                 .subject(subject)
                 .content(content)
-                .sendTime(LocalDateTime.now())
-                .isSent(true)
+                .sendTime(now.withSecond(0))
+                .isSent(false)
                 .build();
     }
 

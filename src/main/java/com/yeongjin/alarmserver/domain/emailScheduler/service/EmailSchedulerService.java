@@ -10,6 +10,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -18,14 +20,21 @@ public class EmailSchedulerService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final EmailAlarmRepository emailAlarmRepository;
 
+    //todo 동시성 처리
+    public void registerEmailAlarmToStream(EmailAlarm emailAlarm) {
+        redisTemplate.opsForStream()
+                .add(StreamRecords.newRecord()
+                        .in("emailAlarmStream")
+                        .ofObject(emailAlarm));
+        emailAlarm.setSent();
+    }
+
     @Scheduled(cron = "30 * * * * *", zone = "Asia/Seoul")
-    public void registerEmailAlarmToStream() {
-        List<EmailAlarm> emailAlarms = emailAlarmRepository.findBySendTime(LocalDateTime.now().withSecond(0));
+    public void scanEmailAlarmInDatabase() {
+        LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+        List<EmailAlarm> emailAlarms = emailAlarmRepository.findEmailsToSend(now.withSecond(0));
         for (EmailAlarm emailAlarm : emailAlarms) {
-            redisTemplate.opsForStream()
-                    .add(StreamRecords.newRecord()
-                            .in("emailAlarmStream")
-                            .ofObject(emailAlarm));
+            registerEmailAlarmToStream(emailAlarm);
         }
     }
 }
