@@ -49,7 +49,7 @@ public class EmailAlarm {
                 .recipients(recipients)
                 .subject(subject)
                 .content(content)
-                .sendTime(sendTime)
+                .sendTime(sendTime.withSecond(0))
                 .isSent(false)
                 .build();
     }

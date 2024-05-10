@@ -3,7 +3,7 @@ package com.yeongjin.alarmserver.domain.api.service;
 import com.yeongjin.alarmserver.domain.api.dto.request.ImmediateEmailReq;
 import com.yeongjin.alarmserver.domain.api.dto.request.ScheduledEmailReq;
 import com.yeongjin.alarmserver.domain.api.entity.EmailAlarm;
-import com.yeongjin.alarmserver.domain.api.repository.EmailAlarmRepository;
+import com.yeongjin.alarmserver.domain.repository.EmailAlarmRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.stream.ObjectRecord;
@@ -20,13 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class EmailAlarmService {
     private final EmailAlarmRepository emailAlarmRepository;
     private final JavaMailSender javaMailSender;
-    private final RedisTemplate<String, Object> redisTemplate;
 
     private void saveEmailAlarmToStream(EmailAlarm emailAlarm) {
-        ObjectRecord<String, EmailAlarm> record = StreamRecords.newRecord()
-                .in("emailAlarmStream")
-                .ofObject(emailAlarm);
-        redisTemplate.opsForStream().add(record);
+
 //        List<ObjectRecord<String, EmailAlarm>> records = redisTemplate.opsForStream()
 //                .read(EmailAlarm.class, StreamOffset.fromStart("emailAlarmStream"));
 //        records.stream()
