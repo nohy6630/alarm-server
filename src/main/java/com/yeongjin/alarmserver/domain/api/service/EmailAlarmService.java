@@ -4,6 +4,7 @@ import com.yeongjin.alarmserver.domain.api.dto.request.ImmediateEmailReq;
 import com.yeongjin.alarmserver.domain.api.dto.request.ScheduledEmailReq;
 import com.yeongjin.alarmserver.domain.api.entity.EmailAlarm;
 import com.yeongjin.alarmserver.domain.emailScheduler.service.EmailSchedulerService;
+import com.yeongjin.alarmserver.domain.emailSender.service.EmailSenderService;
 import com.yeongjin.alarmserver.domain.repository.EmailAlarmRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EmailAlarmService {
     private final EmailAlarmRepository emailAlarmRepository;
     private final EmailSchedulerService emailSchedulerService;
+    private final EmailSenderService emailSenderService;
     private final JavaMailSender javaMailSender;
 
     @Transactional
@@ -29,7 +31,8 @@ public class EmailAlarmService {
                         immediateEmailReq.getContent()
                 )
         );
-        emailSchedulerService.registerEmailAlarmToStream(emailAlarm);
+        emailAlarm.setSent();
+        emailSenderService.sendEmail(emailAlarm);
         return emailAlarm.getId();
     }
 

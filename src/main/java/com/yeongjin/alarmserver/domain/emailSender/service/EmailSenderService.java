@@ -34,7 +34,7 @@ public class EmailSenderService {
         }
     }
 
-    private void sendEmail(EmailAlarm emailAlarm) {
+    public void sendEmail(EmailAlarm emailAlarm) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
@@ -51,14 +51,14 @@ public class EmailSenderService {
 
     @Scheduled(cron = "0 * * * * *", zone = "Asia/Seoul")
     public void fetchDataFromStream() {
-        List<ObjectRecord<String, EmailAlarm>> records = redisTemplate.opsForStream()
-                .read(EmailAlarm.class, StreamOffset.fromStart("emailAlarmStream"));
-        records.stream()
-                .map(ObjectRecord::getValue)
-                .forEach(this::sendEmail);
-        records.stream()
-                .map(ObjectRecord::getId)
-                .forEach(recordId -> redisTemplate.opsForStream()
-                        .acknowledge("emailAlarmStream", "myGroup", recordId));
+//        List<ObjectRecord<String, EmailAlarm>> records = redisTemplate.opsForStream()
+//                .read(EmailAlarm.class, StreamOffset.fromStart("emailAlarmStream"));
+//        records.stream()
+//                .map(ObjectRecord::getValue)
+//                .forEach(this::sendEmail);
+//        records.stream()
+//                .map(ObjectRecord::getId)
+//                .forEach(recordId -> redisTemplate.opsForStream()
+//                        .acknowledge("emailAlarmStream", "myGroup", recordId));
     }
 }
