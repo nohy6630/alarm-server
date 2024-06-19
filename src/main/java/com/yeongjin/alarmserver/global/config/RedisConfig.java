@@ -1,6 +1,6 @@
 package com.yeongjin.alarmserver.global.config;
 
-import com.yeongjin.alarmserver.domain.emailSender.service.SendEmailSubscriber;
+import com.yeongjin.alarmserver.domain.alarm.service.SendAlarmSubscriber;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,8 +35,8 @@ public class RedisConfig {
     }
 
     @Bean
-    public MessageListenerAdapter messageListenerAdapter(SendEmailSubscriber sendEmailSubscriber) {
-        return new MessageListenerAdapter(sendEmailSubscriber, "sendEmail");
+    public MessageListenerAdapter messageListenerAdapter(SendAlarmSubscriber sendAlarmSubscriber) {
+        return new MessageListenerAdapter(sendAlarmSubscriber, "sendEmail");
     }
 
     @Bean

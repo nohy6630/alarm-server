@@ -1,4 +1,4 @@
-package com.yeongjin.alarmserver.domain.api.entity;
+package com.yeongjin.alarmserver.domain.alarm.entity;
 
 
 import jakarta.persistence.*;
@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Comment("메일")
-public class EmailAlarm {
+public class Alarm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,9 +36,9 @@ public class EmailAlarm {
     @Comment("발송 여부")
     private boolean isSent;
 
-    public static EmailAlarm ofImmediate(List<String> recipients, String subject, String content) {
+    public static Alarm ofImmediate(List<String> recipients, String subject, String content) {
         LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
-        return EmailAlarm.builder()
+        return Alarm.builder()
                 .recipients(recipients)
                 .subject(subject)
                 .content(content)
@@ -47,8 +47,8 @@ public class EmailAlarm {
                 .build();
     }
 
-    public static EmailAlarm ofScheduled(List<String> recipients, String subject, String content, LocalDateTime sendTime) {
-        return EmailAlarm.builder()
+    public static Alarm ofScheduled(List<String> recipients, String subject, String content, LocalDateTime sendTime) {
+        return Alarm.builder()
                 .recipients(recipients)
                 .subject(subject)
                 .content(content)

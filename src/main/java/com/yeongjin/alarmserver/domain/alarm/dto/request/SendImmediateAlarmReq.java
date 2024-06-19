@@ -1,4 +1,4 @@
-package com.yeongjin.alarmserver.domain.api.dto.request;
+package com.yeongjin.alarmserver.domain.alarm.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ImmediateEmailReq {
+public class SendImmediateAlarmReq {
     @Size(min = 1, message = "at least one recipient must be selected")
     private List<String> recipients;
 

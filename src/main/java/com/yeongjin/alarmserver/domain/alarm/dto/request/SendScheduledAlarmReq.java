@@ -1,4 +1,4 @@
-package com.yeongjin.alarmserver.domain.api.dto.request;
+package com.yeongjin.alarmserver.domain.alarm.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ScheduledEmailReq {
+public class SendScheduledAlarmReq {
     @Size(min = 1, message = "at least one recipient must be selected")
     private List<String> recipients;
 
