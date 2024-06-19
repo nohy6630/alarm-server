@@ -11,6 +11,6 @@ public interface EmailAlarmRepository extends JpaRepository<EmailAlarm, Long> {
     @Query("select e.id from EmailAlarm e where e.isSent = true")
     List<Long> findIdsIsSent();
 
-    @Query("select e from EmailAlarm e where e.sendTime = :sendTime and e.isSent = false")
+    @Query("select e from EmailAlarm e where e.sendTime <= :sendTime and e.isSent = false")
     List<EmailAlarm> findEmailsToSend(LocalDateTime sendTime);
 }

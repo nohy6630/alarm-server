@@ -3,8 +3,8 @@ package com.yeongjin.alarmserver.domain.api.service;
 import com.yeongjin.alarmserver.domain.api.dto.request.ImmediateEmailReq;
 import com.yeongjin.alarmserver.domain.api.dto.request.ScheduledEmailReq;
 import com.yeongjin.alarmserver.domain.api.entity.EmailAlarm;
-import com.yeongjin.alarmserver.domain.emailScheduler.service.EmailSchedulerService;
-import com.yeongjin.alarmserver.domain.emailSender.service.EmailSenderService;
+import com.yeongjin.alarmserver.domain.emailScheduler.service.SendEmailPublisher;
+import com.yeongjin.alarmserver.domain.emailSender.service.SendEmailSubscriber;
 import com.yeongjin.alarmserver.domain.repository.EmailAlarmRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class EmailAlarmService {
     private final EmailAlarmRepository emailAlarmRepository;
-    private final EmailSchedulerService emailSchedulerService;
-    private final EmailSenderService emailSenderService;
+    private final SendEmailPublisher sendEmailPublisher;
+    private final SendEmailSubscriber sendEmailSubscriber;
     private final JavaMailSender javaMailSender;
 
     @Transactional
@@ -32,7 +32,7 @@ public class EmailAlarmService {
                 )
         );
         emailAlarm.setSent();
-        emailSenderService.sendEmail(emailAlarm);
+        sendEmailPublisher.publishToRedis(emailAlarm);
         return emailAlarm.getId();
     }
 
@@ -43,7 +43,7 @@ public class EmailAlarmService {
                         scheduledEmailReq.getRecipients(),
                         scheduledEmailReq.getSubject(),
                         scheduledEmailReq.getContent(),
-                        scheduledEmailReq.getSendTime()
+                        scheduledEmailReq.getSendTime().withSecond(0)
                 )
         );
         return emailAlarm.getId();

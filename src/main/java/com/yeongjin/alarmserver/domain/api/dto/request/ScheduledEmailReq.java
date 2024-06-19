@@ -2,6 +2,7 @@ package com.yeongjin.alarmserver.domain.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class ScheduledEmailReq {
     @NotEmpty(message = "content is required")
     private String content;
 
-    @NotEmpty(message = "sendTime is required")
+    @NotNull(message = "sendTime is required")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime sendTime;
 }
