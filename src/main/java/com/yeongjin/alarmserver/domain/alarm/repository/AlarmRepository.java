@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AlarmRepository extends JpaRepository<Alarm, Long> {
-    @Query("select e.id from Alarm e where e.isSent = true")
+    @Query("select e.id from Alarm e where e.status = 'SENT'")
     List<Long> findIdsIsSent();
 
-    @Query("select e from Alarm e where e.sendTime <= :sendTime and e.isSent = false")
+    @Query("select e from Alarm e where e.sendTime <= :sendTime and e.status = 'RESERVED'")
     List<Alarm> findEmailsToSend(LocalDateTime sendTime);
 }

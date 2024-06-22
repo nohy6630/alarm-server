@@ -33,8 +33,9 @@ public class Alarm {
     @Comment("메일 발송 시간")
     private LocalDateTime sendTime;
 
-    @Comment("발송 여부")
-    private boolean isSent;
+    @Comment("알림 상태")
+    @Enumerated(EnumType.STRING)
+    private AlarmStatus status;
 
     public static Alarm ofImmediate(List<String> recipients, String subject, String content) {
         LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
@@ -42,8 +43,8 @@ public class Alarm {
                 .recipients(recipients)
                 .subject(subject)
                 .content(content)
-                .sendTime(now.withSecond(0))
-                .isSent(false)
+                .sendTime(now.withSecond(0).withNano(0))
+                .status(AlarmStatus.SENT)
                 .build();
     }
 
@@ -52,12 +53,12 @@ public class Alarm {
                 .recipients(recipients)
                 .subject(subject)
                 .content(content)
-                .sendTime(sendTime.withSecond(0))
-                .isSent(false)
+                .sendTime(sendTime.withSecond(0).withNano(0))
+                .status(AlarmStatus.RESERVED)
                 .build();
     }
 
-    public void setSent() {
-        this.isSent = true;
+    public void setStatus(AlarmStatus status) {
+        this.status = status;
     }
 }

@@ -12,15 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 public class SendAlarmService {
     private final AlarmRepository alarmRepository;
     private final SendAlarmPublisher sendEmailPublisher;
-    private final SendAlarmSubscriber sendAlarmSubscriber;
-    private final JavaMailSender javaMailSender;
 
-    @Transactional
     public Long sendImmediateEmail(SendImmediateAlarmReq sendImmediateAlarmReq) {
         Alarm alarm = alarmRepository.save(
                 Alarm.ofImmediate(
@@ -29,7 +25,6 @@ public class SendAlarmService {
                         sendImmediateAlarmReq.getContent()
                 )
         );
-        alarm.setSent();
         sendEmailPublisher.publishToRedis(alarm);
         return alarm.getId();
     }
@@ -41,7 +36,7 @@ public class SendAlarmService {
                         sendScheduledAlarmReq.getRecipients(),
                         sendScheduledAlarmReq.getSubject(),
                         sendScheduledAlarmReq.getContent(),
-                        sendScheduledAlarmReq.getSendTime().withSecond(0)
+                        sendScheduledAlarmReq.getSendTime()
                 )
         );
         return alarm.getId();
