@@ -23,6 +23,8 @@ public class Alarm {
 
     @ElementCollection
     private List<String> recipients;
+    // 알림 유형이 EMAIL일 경우 수신자 이메일 주소
+    // 알림 유형이 FCM일 경우 수신자 FCM 토큰
 
     @Comment("제목")
     private String subject;
@@ -37,9 +39,14 @@ public class Alarm {
     @Enumerated(EnumType.STRING)
     private AlarmStatus status;
 
-    public static Alarm ofImmediate(List<String> recipients, String subject, String content) {
+    @Comment("알림 유형")
+    @Enumerated(EnumType.STRING)
+    private AlarmType type;
+
+    public static Alarm ofImmediate(AlarmType type, List<String> recipients, String subject, String content) {
         LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
         return Alarm.builder()
+                .type(type)
                 .recipients(recipients)
                 .subject(subject)
                 .content(content)
@@ -48,8 +55,9 @@ public class Alarm {
                 .build();
     }
 
-    public static Alarm ofScheduled(List<String> recipients, String subject, String content, LocalDateTime sendTime) {
+    public static Alarm ofScheduled(AlarmType type, List<String> recipients, String subject, String content, LocalDateTime sendTime) {
         return Alarm.builder()
+                .type(type)
                 .recipients(recipients)
                 .subject(subject)
                 .content(content)
